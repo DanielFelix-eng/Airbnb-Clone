@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/store'
-import { Camera, Lock, Mail, User, Trash2, Upload } from 'lucide-react'
+import { Camera, Lock, Trash2, Upload } from 'lucide-react'
+import { storage, ID } from '../appwrite'
 
 const defaultAvatar = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80'
 
@@ -12,7 +13,7 @@ export default function Profile() {
   const [email, setEmail] = useState('')
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
-  const [avatar, setAvatar] = useState('')
+  const [avatarFile, setAvatarFile] = useState(null)
   const [avatarPreview, setAvatarPreview] = useState('')
   const [message, setMessage] = useState('')
   const [deletePassword, setDeletePassword] = useState('')
@@ -31,13 +32,28 @@ export default function Profile() {
     const file = event.target.files?.[0]
     if (!file) return
 
+    setAvatarFile(file)
     const reader = new FileReader()
     reader.onloadend = () => {
       const imageData = reader.result
-      setAvatar(imageData)
       setAvatarPreview(imageData)
     }
     reader.readAsDataURL(file)
+  }
+
+  const uploadAvatarToAppwrite = async () => {
+    if (!avatarFile) return null
+
+    const bucketId = import.meta.env.VITE_APPWRITE_BUCKET_ID
+    const endpoint = import.meta.env.VITE_APPWRITE_ENDPOINT
+    const projectId = import.meta.env.VITE_APPWRITE_PROJECT_ID
+
+    if (!bucketId || !endpoint || !projectId) {
+      throw new Error('Appwrite storage configuration is missing. Please set VITE_APPWRITE_ENDPOINT, VITE_APPWRITE_PROJECT_ID, and VITE_APPWRITE_BUCKET_ID.')
+    }
+
+    const file = await storage.createFile(bucketId, ID.unique(), avatarFile)
+    return `${endpoint}/storage/buckets/${bucketId}/files/${file.$id}/view?project=${projectId}`
   }
 
   const handleUpdate = async (event) => {
@@ -45,12 +61,13 @@ export default function Profile() {
     setMessage('')
     setIsSaving(true)
     try {
+      const profilePicture = avatarFile ? await uploadAvatarToAppwrite() : user.profilePicture
       await updateProfile({
         name,
         email,
         currentPassword: currentPassword.trim() || undefined,
         newPassword: newPassword.trim() || undefined,
-        profilePicture: avatar || undefined,
+        profilePicture: profilePicture || undefined,
       })
       setMessage('Profile updated successfully')
       setCurrentPassword('')
