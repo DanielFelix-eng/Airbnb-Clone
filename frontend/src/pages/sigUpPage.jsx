@@ -111,16 +111,19 @@ export default function SignUpPage() {
             >
               {isLoading ?  <Loader className = 'animate-spin mx-auto' size ={24} /> : "sign up" }
             </button>
-              <Oauth/>
 
           </form>
+            
+           
 
           <div className="mt-6 text-center text-sm text-slate-400">
             Already have an account?{' '}
             <Link to={"/login"} className="font-semibold text-emerald-300 hover:text-emerald-200">
               Log in
             </Link>
-          </div> 
+          </div>  
+            <Oauth/>
+            
          
         </div> 
         

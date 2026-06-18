@@ -41,9 +41,8 @@ export default function Profile() {
     reader.readAsDataURL(file)
   }
 
-  const uploadAvatarToAppwrite = async () => {
-    if (!avatarFile) return null
-
+  const uploadAvatarToBackend = async () => {
+    if (!avatarFile || !avatarPreview) return null
     const bucketId = import.meta.env.VITE_APPWRITE_BUCKET_ID
     const endpoint = import.meta.env.VITE_APPWRITE_ENDPOINT
     const projectId = import.meta.env.VITE_APPWRITE_PROJECT_ID
@@ -61,8 +60,8 @@ export default function Profile() {
     setMessage('')
     setIsSaving(true)
     try {
-      const profilePicture = avatarFile ? await uploadAvatarToAppwrite() : user.profilePicture
-      await updateProfile({
+      const profilePicture = avatarFile ? await uploadAvatarToBackend() : user.profilePicture
+      const response = await updateProfile({
         name,
         email,
         currentPassword: currentPassword.trim() || undefined,
@@ -72,6 +71,11 @@ export default function Profile() {
       setMessage('Profile updated successfully')
       setCurrentPassword('')
       setNewPassword('')
+      setAvatarFile(null)
+      const updatedUrl = response?.user?.profilePicture || profilePicture || user.profilePicture
+      if (updatedUrl) {
+        setAvatarPreview(updatedUrl)
+      }
     } catch (err) {
       setMessage(err?.response?.data?.message || 'Unable to update profile')
     } finally {

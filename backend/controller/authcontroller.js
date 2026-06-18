@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs' 
+import bcrypt from 'bcryptjs'
  import crypto from 'crypto'
 import{ User }from '../models/user.model.js'
 import { generateToken } from '../utils/setCookie.js'
@@ -349,3 +349,4 @@ export const deleteAccount = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message })
   }
 }
+
