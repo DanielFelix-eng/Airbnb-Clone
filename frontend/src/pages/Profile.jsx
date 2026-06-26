@@ -37,10 +37,11 @@ export default function Profile() {
   }, [user])
 
   useEffect(() => {
-    if (showListings && !listingsFetched) {
+    if (showListings) {
+      // always fetch when toggling open to avoid stale/empty listings
       fetchMyListings()
     }
-  }, [showListings, listingsFetched])
+  }, [showListings])
 
   const fetchMyListings = async () => {
     setIsLoadingListings(true)

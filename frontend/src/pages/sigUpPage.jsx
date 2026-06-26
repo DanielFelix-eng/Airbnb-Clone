@@ -68,10 +68,10 @@ export default function SignUpPage() {
               Create account
             </p>
             <h1 className="mt-4 text-4xl font-semibold text-slate-100">
-              Start your secure journey
+              Join Our Property Marketplace
             </h1>
             <p className="mt-3 text-sm text-slate-400">
-              Join now and manage your authentication with email verification and session support.
+            Welcome Home—Let's Get Started
             </p>
           </div>
 

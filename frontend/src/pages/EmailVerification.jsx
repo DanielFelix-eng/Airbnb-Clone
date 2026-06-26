@@ -57,7 +57,7 @@ export default function EmailVerification() {
         setMessage(data?.message || 'Verification failed')
         return
       }
-      setMessage(data?.message || 'Email verified successfully') 
+      setMessage(data?.message || 'Email verified successfully. Redirecting...')
       navigate("/")
     } catch (error) {
       setMessage(error?.message || 'Network error')
@@ -77,7 +77,7 @@ export default function EmailVerification() {
         setMessage(data?.message || 'Resend failed')
         return
       }
-      setMessage(data?.message || 'Verification email resent. Check your inbox.')
+      setMessage(data?.message || 'Verification email resent. Please check your spam folder too—our email may have been sent there.')
        navigate("/login")
     } catch (error) {
       setMessage(error?.message || 'Network error')
@@ -97,7 +97,7 @@ export default function EmailVerification() {
             <p className="text-sm font-semibold uppercase tracking-[0.26em] text-slate-500">Email verification</p>
             <h1 className="mt-4 text-3xl font-semibold text-slate-100">Verify your email</h1>
             <p className="mt-3 text-sm leading-6 text-slate-400">
-              Enter the 6-digit code sent to your inbox to complete account setup.
+              Enter the 6-digit code sent to your inbox to complete account setup. If you don’t see it, please check your spam folder.
             </p>
           </div>
 

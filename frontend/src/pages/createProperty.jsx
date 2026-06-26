@@ -37,7 +37,8 @@ export default function CreateProperty() {
   const [listingsError, setListingsError] = useState('');
 
   useEffect(() => {
-    if (showListings && !listingsFetched) {
+    if (showListings) {
+      // always fetch when toggling open to avoid stale/empty listings
       fetchMyListings();
     }
   }, [showListings]);

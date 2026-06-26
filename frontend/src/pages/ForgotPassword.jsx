@@ -38,14 +38,16 @@ export default function ForgotPassword() {
         throw new Error(data.message || 'Failed to send reset email')
       }
 
-      setMessage('Reset link sent successfully! Check your email.')
+      setMessage('Reset link sent successfully! Please check your spam folder too—our email may have been sent there.')
       setMessageType('success')
       setEmailSent(true)
       setEmail('')
 
+
       setTimeout(() => {
         navigate('/login')
       }, 4000)
+
     } catch (error) {
       setMessage(error.message || 'An error occurred. Please try again.')
       setMessageType('error')
@@ -130,9 +132,10 @@ export default function ForgotPassword() {
               </div>
               <h2 className="text-xl font-semibold text-slate-100 mb-2">Email Sent!</h2>
               <p className="text-sm text-slate-400 mb-6">
-                We've sent a password reset link to <span className="text-emerald-300 font-medium">{email}</span>
+                We've sent a password reset link to <span className="text-emerald-300 font-medium">{email}</span>. Please check your spam folder too—our email may have been sent there.
               </p>
               <p className="text-xs text-slate-500 mb-6">Redirecting to login in a moment...</p>
+
               <button
                 onClick={() => navigate('/login')}
                 className="w-full rounded-3xl bg-slate-700 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:bg-slate-600"
