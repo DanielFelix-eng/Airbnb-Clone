@@ -11,6 +11,7 @@ export default defineConfig({
     }),
     tailwindcss(),
   ], 
+  base: '/', // 👈 Added to ensure absolute asset resolution on production servers like Render
   server: {
     proxy: {
       '/api': {
